@@ -1,0 +1,6 @@
+
+docker build -f ./Docker1/Dockerfile -t epam_hw_1:latest --no-cache .
+
+echo "Finished build successful"
+
+docker run -p 80:80 epam_hw_1:latest

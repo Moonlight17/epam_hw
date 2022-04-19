@@ -1,0 +1,25 @@
+
+
+docker network create epam_serov_docker
+echo "Network created!"
+
+
+docker build -f ./Docker2/Dockerfile -t epam_hw_2:latest --no-cache .
+echo "Build finished!"
+
+docker run \
+    --name serov-postgres \
+    --net epam_serov_docker \
+    -d \
+    -e POSTGRES_DB=django \
+    -e POSTGRES_USER=django \
+    -e POSTGRES_PASSWORD=django \
+    -e PGDATA=/var/lib/postgresql/data/pgdata \
+    -v data:/var/lib/postgresql/data \
+    postgres:14-alpine
+echo "PostgreSQL runnig!"
+
+
+docker run -p 8000:8000 -e DATABASE_HOST=serov-postgres --net epam_serov_docker epam_hw_2:latest
+echo "Network created!"
+
