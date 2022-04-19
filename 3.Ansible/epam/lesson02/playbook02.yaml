@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - name: Remove users
+      user:
+        name: "{{item}}"
+        state: absent
+        remove: yes
+      loop:
+        - Alice
+        - Bob
+        - Carol
+...

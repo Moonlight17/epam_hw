@@ -1,0 +1,5 @@
+- hosts: all
+
+  roles:
+    - serov
+    - ftp_role

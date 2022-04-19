@@ -1,0 +1,20 @@
+---
+listen: 'YES'
+anonymous_enable: 'YES'
+write_enable: 'YES'
+anon_upload_enable: 'YES'
+anon_mkdir_write_enable: 'YES'
+anon_other_write_enable: 'YES'
+anon_root: /var/ftp/pub
+anon_upload_root: /var/ftp/pub/upload
+no_anon_password: 'YES'
+hide_ids: 'YES'
+vsftpd_enabled: true
+vsftpd_restart_state: restarted
+vsftpd_package_state: present
+vsftpd_state: started
+firewalld_enabled: true
+firewalld_restart_state: reloaded
+firewalld_package_state: present
+firewalld_state: started
+...

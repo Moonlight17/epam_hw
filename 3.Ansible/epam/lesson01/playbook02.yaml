@@ -1,0 +1,29 @@
+---
+- hosts: all
+  tasks:
+  - name: stop httpd
+    service: 
+      name: httpd 
+      state: stopped
+
+  - name: remove of Apache
+    dnf:
+      name: httpd
+      state: absent
+
+  - name: Remove file
+    file:
+      path: /var/www/html/index.html
+      state: absent
+
+  - name: ports for httpd
+    firewalld:
+      port: 80/tcp
+      permanent: yes
+      state: disabled
+    
+  - name: restart firewalld
+    service:
+      name: firewalld
+      state: restarted
+...

@@ -1,0 +1,32 @@
+---
+- hosts: all
+  tasks:
+  - name: install the latest version of Apache
+    dnf:
+      name: httpd
+      state: latest
+      
+  - name: start httpd
+    service: 
+      name: httpd 
+      state: started
+
+  - name: ensure file exists
+    copy:
+      content: "Welcome to my web server!"
+      dest: /var/www/html/index.html
+      force: yes
+      owner: ansible
+      mode: 0555
+
+  - name: ports for httpd
+    firewalld:
+      port: 80/tcp
+      permanent: yes
+      state: enabled
+    
+  - name: restart firewalld
+    service:
+      name: firewalld
+      state: restarted
+...

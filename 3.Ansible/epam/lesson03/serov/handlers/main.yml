@@ -1,0 +1,13 @@
+---
+# handlers file for serov
+  - name: httpd reload
+    service:
+      name: httpd
+      state: restarted
+  
+  - name: restart firewalld
+    service:
+      name: firewalld
+      state: restarted
+
+...
