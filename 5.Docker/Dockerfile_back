@@ -1,0 +1,34 @@
+FROM python:3.8.9-alpine as back-stage
+
+WORKDIR /app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2 dependencies
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev \
+    && apk add --update --no-cache libxslt-dev
+
+# install dependencies
+COPY docker_homework/lib_catalog/requirements.txt /app/requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+
+
+# copy project
+COPY ./docker_homework/lib_catalog/ .
+EXPOSE 8000
+
+
+
+# CMD ["python", "manage.py", "makemigrations", "epam"]
+# CMD ["python", "manage.py", "migrate", "epam"]
+
+
+CMD ["python", "manage.py", "runserver", "8000"]
+
+# docker build -f ./Docker2/Dockerfile --net=epam_docker_hw -t epam_hw_2:latest --no-cache .
+# docker run -p 8000:8000 -e DATABASE_HOST=some-postgres --net epam_docker_hw epam_hw_2:latest

@@ -1,0 +1,12 @@
+
+docker network create epam_docker_hw
+
+docker run \
+    --name some-postgres \
+    --net epam_docker_hw \
+    -e POSTGRES_DB=django \
+    -e POSTGRES_USER=django \
+    -e POSTGRES_PASSWORD=django \
+    -e PGDATA=/var/lib/postgresql/data/pgdata \
+    -v data:/var/lib/postgresql/data \
+    postgres:14-alpine

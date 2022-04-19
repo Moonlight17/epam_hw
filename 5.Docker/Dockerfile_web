@@ -1,0 +1,17 @@
+# build stage
+FROM node:12-alpine as build-stage
+WORKDIR /web/
+COPY ../docker_homework/frontend/package*.json .
+RUN npm install --only=prod
+COPY docker_homework/frontend/ .
+RUN npm run build
+
+# production stage
+FROM nginx:latest as production-stage
+COPY --from=build-stage /web/build /usr/share/nginx/html
+EXPOSE 3000
+CMD ["nginx", "-g", "daemon off;"]
+
+
+# docker build -f ./Docker1/Dockerfile -t epam_hw_1:latest --no-cache .
+
