@@ -1,5 +1,6 @@
 import axios from 'axios'
-const API_URL = 'http://localhost:8000/api/v1/lib/bbk/';
+// const base_name = process.env.REACT_APP_SERVER
+const API_URL = process.env.REACT_APP_SERVER +'api/v1/lib/bbk/';
 
 export default class BBKManager {
 
