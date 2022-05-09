@@ -59,4 +59,4 @@ kubectl apply -f ingress-canary.yaml
 ---
 ## Destination traffic
 <img style="width:100%;" title="kubectl get all" src="images/curl deploy.png">
-<img style="width:100%;" title="kubectl get all" src="images/curl canary.png">
+<img style="width:100%;" title="kubectl get all" src="./images/curl canary.png">
