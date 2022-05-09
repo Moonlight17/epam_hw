@@ -1,3 +1,6 @@
+
+## In Minikube in namespace kube-system, there are many different pods running. Your task is to figure out who creates them, and who makes sure they are running (restores them after deletion).
+
 ```
 kubectl get all -n kube-system
 NAME                                         READY   STATUS    RESTARTS         AGE
@@ -23,6 +26,11 @@ deployment.apps/coredns   2/2     2            2           42d
 NAME                                 DESIRED   CURRENT   READY   AGE
 replicaset.apps/coredns-78fcd69978   2         2         2       42d
 ```
+
+
+## Answer:
+
+Controlled by higher level kubernetes like Deployment, Replicaset, Replication controller.
 
 
 ---
@@ -59,4 +67,4 @@ kubectl apply -f ingress-canary.yaml
 ---
 ## Destination traffic
 <img style="width:100%;" title="kubectl get all" src="images/curl deploy.png">
-<img style="width:100%;" title="kubectl get all" src="./images/curl canary.png">
+<img style="width:100%;" title="kubectl get all" src="images/curl canary.png">
