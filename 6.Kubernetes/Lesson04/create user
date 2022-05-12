@@ -1,0 +1,1 @@
+kubectl config set-credentials k8s_user --client-certificate=k8s_user.crt --client-key=k8s_user.key

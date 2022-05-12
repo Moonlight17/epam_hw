@@ -1,0 +1,43 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: deploy-viewer
+rules:
+- apiGroups: [""]
+  resources: ["deployments", "pods"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deploy_view
+subjects:
+- kind: User
+  name: deploy_view
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: deploy-viewer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: deploy-editor
+rules:
+- apiGroups: [""]
+  resources: ["deployments", "pods"]
+  verbs: ["all"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deploy_edit
+subjects:
+- kind: User
+  name: deploy_edit
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: deploy-editor
+  apiGroup: rbac.authorization.k8s.io

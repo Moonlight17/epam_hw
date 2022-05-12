@@ -1,0 +1,1 @@
+openssl x509 -req -in k8s_user.csr -CA ~/.minikube/ca.crt -CAkey ~/.minikube/ca.key -CAcreateserial -out k8s_user.crt -days 500
