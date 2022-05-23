@@ -1,5 +1,3 @@
-
-
 output "data_aws_vpc" {
     value = data.aws_vpc.data_vpc.id
 }
