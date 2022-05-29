@@ -1,24 +1,140 @@
 terraform {
-    required_providers {
-        aws = {
-            source  = "hashicorp/aws"
-            version = "~> 4.0"
-        }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
     }
-    required_version = "~> 1.0"
+  }
+  required_version = "~>1.0"
 }
 
-Configure the AWS Provider
+# Configure the AWS Provider
 provider "aws" {
-    region = "eu-central-1"
-    default_tags {
-        tags = {
-            "Owner" = "DevOps"
-        }
-    }
+  region = "us-east-1"
 }
 
-data "aws_vpc" "data_vpc" {}
-data "aws_subnets" "data_aws_subnets" {}
-data "aws_security_groups" "data_aws_security_groups" {}
+
+
+
+
+data "aws_ami" "latest_amazon_linux" {
+  owners      = ["amazon"]
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-kernel-5.10-hvm-*-x86_64-gp2"]  
+  }
+}
+
+resource "aws_instance" "nginx" {
+  ami                    = data.aws_ami.latest_amazon_linux.id
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.sg-web.id]
+
+  user_data = file("data_nginx.sh")
+
+  tags = {
+    Name = "nginx"
+    Owner = "serov.sergei"
+  }
+
+}
+
+
+resource "aws_security_group" "sg-web" {
+  name = "my-sg-web"
+  description = "sg-web"
+  ingress {
+    description = "http"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+
+
+ ingress {
+    description = "Allow SSH inbound"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
+
+  tags = {
+    
+    Owner = "serov.sergei"
+  }
+
+}
+
+resource "random_string" "mysql_password" {
+  length  = 10
+  special = false
+}
+
+resource "aws_db_instance" "default" {
+  allocated_storage    = 10
+  storage_type         = "gp2"
+  engine               = "mysql"
+  engine_version       = "8.0.20"
+  instance_class       = "db.t2.micro"
+  identifier           = "mysqldb"
+  port                 = "3306"
+  identifier_prefix    = null
+  multi_az             = false
+  storage_encrypted    = false
+  final_snapshot_identifier = "DELETEME"
+  skip_final_snapshot  = true
+  snapshot_identifier  = null
+  db_name                = var.DB_NAME
+  username             = var.DB_USER
+  password             = random_string.mysql_password.result
+  vpc_security_group_ids = [aws_security_group.sg-db.id]
+  
+  tags = {
+   
+    Owner = "serov.sergei"
+  }
+}
+
+resource "aws_security_group" "sg-db" {
+  name = "my-sg-db"
+  description = "sg-db"
+  ingress {
+    description = "http"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  tags = {
+   
+    Owner = "serov.sergei"
+  }
+
+}
+
 

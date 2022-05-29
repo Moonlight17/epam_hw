@@ -1,13 +1,11 @@
-
-
-output "data_aws_vpc" {
-    value = data.aws_vpc.data_vpc.id
+output "ec2_address" {
+  value = aws_instance.nginx.public_dns
 }
 
-output "data_aws_subnets" {
-    value = data.aws_subnets.data_aws_subnets.ids
+output "rds_address" {
+  value = aws_db_instance.default.address
 }
 
-output "data_aws_security_groups" {
-    value = data.aws_security_groups.data_aws_security_groups.ids
+output "rds_creds" {
+  value = "${var.DB_NAME}, ${var.DB_USER} : ${random_string.mysql_password.result}"
 }
